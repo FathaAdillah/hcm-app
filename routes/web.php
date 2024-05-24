@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AbsenController;
+use App\Http\Controllers\UsersController;
 
 
 Route::get('/', function () {
@@ -18,9 +19,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         return view('pages.auth.auth-reset-password');})->name('reset-password');
 
 
+
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/mainpage', function () {
             return view('admin.dashboard');})->name('mainpage');
+        Route::resource('users', UsersController::class);
     });
 });
 

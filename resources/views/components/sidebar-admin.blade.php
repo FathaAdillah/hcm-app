@@ -20,6 +20,9 @@
                     <li class="{{ Request::is('dashboard-ecommerce-dashboard') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('dashboard-ecommerce-dashboard') }}">Report</a>
                     </li>
+                    <li class="{{ Request::is('dashboard-ecommerce-dashboard') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ Route('users.index') }}">Users</a>
+                    </li>
                 </ul>
             </li>
             <li class="menu-header">Administrator</li>
@@ -27,9 +30,6 @@
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-database"></i>
                     <span>Master Data</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Request::is('layout-default-layout') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('layout-default-layout') }}">Master Employee</a>
-                    </li>
                     <li class="{{ Request::is('transparent-sidebar') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('transparent-sidebar') }}">Master Employee</a>
                     </li>
