@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\UsersController;
-use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\auth\ResetPasswordController;
 
 
 Route::get('/', function () {
@@ -18,7 +18,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('absen', AbsenController::class);
     Route::get('/reset-password', function () {
         return view('pages.auth.auth-reset-password');})->name('reset-password');
-
     Route::post('/reset-password', [ResetPasswordController::class, 'update'])->name('password.update');
 
 
