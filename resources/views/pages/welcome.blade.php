@@ -11,8 +11,12 @@
             <div class="section-header">
                 <h1>Logged In</h1>
             </div>
-
             <div class="section-body">
+                <div class="row">
+                    <div class="col-12">
+                        @include('layouts.alert')
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12 mb-4">
                         <div class="hero bg-primary text-white">
