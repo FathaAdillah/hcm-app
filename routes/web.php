@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\UsersController;
-use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\auth\ResetPasswordController;
 
 
 Route::get('/', function () {
