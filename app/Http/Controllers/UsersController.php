@@ -25,8 +25,10 @@ class UsersController extends Controller
 
     public function create()
     {
-        $employees = Employee::all();
-        return view('pages.users.create', compact('employees'));
+        $employees = DB::table('employees')
+            ->orderBy('id', 'asc')
+            ->paginate(5);
+        return view('admin.users.create', compact('employees'));
     }
 
     //store
@@ -37,12 +39,13 @@ class UsersController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8',
+            'username' => 'required',
         ]);
 
         User::create([
             'name' => $request->name,
-            'username' => $request->username,
             'email' => $request->email,
+            'username' => $request->username,
             'role' => $request->role,
             'employees_id' => $request->employee,
             'password' => Hash::make($request->password),
@@ -53,15 +56,20 @@ class UsersController extends Controller
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
 
-    //edit
+
     public function edit($id)
     {
-        $users = DB::table('users')
+        $user = DB::table('users')
             ->leftJoin('employees', 'users.employees_id', '=', 'employees.id')
-            ->select('users.id', 'users.name as name', 'employees.name as empname', 'users.username', 'users.email')
-            ->where('users.id', $id)->first();
-        $employees = Employee::all();
-        return view('pages.users.edit', compact('users', 'employees'));
+            ->select('users.id', 'users.name as name', 'employees.name as empname', 'users.username', 'users.email', 'users.role')
+            ->where('users.id', $id)
+            ->first();
+
+        $employees = DB::table('employees')
+            ->orderBy('id', 'asc')
+            ->paginate(5);
+
+        return view('admin.users.edit', compact('user', 'employees'));
     }
 
     //update
@@ -69,19 +77,18 @@ class UsersController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'username' => 'required',
+            'role' => 'required',
             'email' => 'required|email',
         ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'username' => $request->phone,
             'role' => $request->role,
             'employee_id' => $request->employee,
         ]);
 
-        //if password filled
+
         if ($request->password) {
             $user->update([
                 'password' => Hash::make($request->password),
