@@ -5,6 +5,7 @@ use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\auth\ResetPasswordController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EmployeesController;
 
 Route::get('/', function () {
     return view('pages.auth.auth-login');
@@ -31,5 +32,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             return view('admin.dashboard');
         })->name('mainpage');
         Route::resource('users', UsersController::class);
+        Route::resource('employees', EmployeesController::class);
     });
 });

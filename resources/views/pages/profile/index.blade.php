@@ -27,7 +27,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Update Profile</h4>
+                                <h4>Profile View</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -36,15 +36,7 @@
                                         <div class="form-group text-center position-relative">
                                             <div>
                                                 <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                                                    class="rounded-circle" style="width: 250px;" alt="Avatar"
-                                                    id="profileImage" />
-                                                <input type="file" id="profileImageInput" class="d-none"
-                                                    accept="image/*">
-                                                <label for="profileImageInput" class="position-absolute"
-                                                    style="bottom: 10px; right: 10px; cursor: pointer;">
-                                                    <i class="fas fa-pencil-alt"
-                                                        style="color: white; background-color: black; border-radius: 50%; padding: 5px;"></i>
-                                                </label>
+                                                    class="rounded-circle" style="width: 250px;" alt="Avatar">
                                             </div>
                                         </div>
                                     </div>
@@ -53,33 +45,38 @@
                                         <form>
                                             <div class="form-group">
                                                 <label for="name">Name</label>
-                                                <input type="text" class="form-control" id="name" name="name">
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                    value="{{ $user->name }}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="birthplace">Birth Place</label>
-                                                <input type="text" class="form-control" id="birthplace"
-                                                    name="birthplace">
+                                                <input type="text" class="form-control" id="birthplace" name="birthplace"
+                                                    value="{{ $user->birthplace }}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="birthdate">Birth Date</label>
-                                                <input type="date" class="form-control" id="birthdate" name="birthdate">
+                                                <input type="date" class="form-control" id="birthdate" name="birthdate"
+                                                    value="{{ $user->birthdate }}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="phone">Phone</label>
-                                                <input type="tel" class="form-control" id="phone" name="phone">
+                                                <input type="tel" class="form-control" id="phone" name="phone"
+                                                    value="{{ $user->phone }}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="status">Status</label>
                                                 <select class="form-control" id="status" name="status">
-                                                    <option value="single">Belum Menikah</option>
-                                                    <option value="married">Menikah</option>
+                                                    <option value="single"
+                                                        {{ $user->status == 'single' ? 'selected' : '' }}>Belum Menikah
+                                                    </option>
+                                                    <option value="married"
+                                                        {{ $user->status == 'married' ? 'selected' : '' }}>Menikah</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="address">Address</label>
-                                                <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                                                <textarea class="form-control" id="address" name="address" rows="3">{{ $user->address }}</textarea>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Update Profile</button>
                                         </form>
                                     </div>
                                 </div>
@@ -87,7 +84,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </section>
     </div>
 
@@ -95,22 +91,7 @@
 
 @push('scripts')
     <!-- JS Libraies -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
-    <script>
-        document.getElementById('profileImage').addEventListener('click', function() {
-            document.getElementById('profileImageInput').click();
-        });
-
-        document.getElementById('profileImageInput').addEventListener('change', function(event) {
-            if (event.target.files && event.target.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profileImage').src = e.target.result;
-                }
-                reader.readAsDataURL(event.target.files[0]);
-            }
-        });
     </script>
 @endpush

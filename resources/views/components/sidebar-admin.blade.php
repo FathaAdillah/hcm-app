@@ -31,7 +31,7 @@
                     <span>Master Data</span></a>
                 <ul class="dropdown-menu">
                     <li class="{{ Request::is('transparent-sidebar') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('transparent-sidebar') }}">Master Employee</a>
+                        <a class="nav-link" href="{{ Route('employees.index') }}">Master Employee</a>
                     </li>
                     <li class="{{ Request::is('layout-top-navigation') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('layout-top-navigation') }}">Master Unit</a>
