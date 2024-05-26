@@ -11,14 +11,14 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Users</h1>
+                <h1>Employee</h1>
                 <div class="section-header-button">
-                    <a href="{{ route('users.create') }}" class="btn btn-primary">Add New</a>
+                    <a href="{{ route('employees.create') }}" class="btn btn-primary">Add New</a>
                 </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Users</a></div>
-                    <div class="breadcrumb-item">All Users</div>
+                    <div class="breadcrumb-item">All Employee</div>
                 </div>
             </div>
             <div class="section-body">
@@ -27,7 +27,7 @@
                         @include('layouts.alert')
                     </div>
                 </div>
-                <h2 class="section-title">Users</h2>
+                <h2 class="section-title">Employee</h2>
                 <p class="section-lead">
                     You can manage all Users, such as editing, deleting and more.
                 </p>
@@ -40,7 +40,7 @@
                             <div class="card-body">
 
                                 <div class="float-right">
-                                    <form method="GET" action="{{ route('users.index') }}">
+                                    <form method="GET" action="{{ route('employees.index') }}">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search" name="name">
                                             <div class="input-group-append">
@@ -55,37 +55,29 @@
                                 <div class="table-responsive">
                                     <table class="table-striped table">
                                         <tr>
-
+                                            <th>ID</th>
                                             <th>Name</th>
-                                            <th>Employee Name</th>
-                                            <th>Username</th>
-                                            <th>Email</th>
-                                            {{-- <th>Created At</th> --}}
+                                            <th>NIP</th>
+                                            <th>Birthplace</th>
+                                            <th>Birthdate</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($users as $item)
+                                        @foreach ($employees as $item)
                                             <tr>
-
-                                                <td>{{ $item->name }}
-                                                </td>
-                                                <td>
-                                                    {{ $item->empname }}
-                                                </td>
-                                                <td>
-                                                    {{ $item->username }}
-                                                </td>
-                                                <td>
-                                                    {{ $item->email }}
-                                                </td>
+                                                <td>{{ $item->id }}</td>
+                                                <td>{{ $item->name }}</td>
+                                                <td>{{ $item->nip }}</td>
+                                                <td>{{ $item->birthplace }}</td>
+                                                <td>{{ $item->birthdate }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
-                                                        <a href='{{ route('users.edit', $item->id) }}'
+                                                        <a href='{{ route('employees.edit', $item->id) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
 
-                                                        <form action="{{ route('users.destroy', $item->id) }}"
+                                                        <form action="{{ route('employees.destroy', $item->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
@@ -101,7 +93,7 @@
                                     </table>
                                 </div>
                                 <div class="float-right">
-                                    {{ $users->withQueryString()->links() }}
+                                    {{ $employees->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>
