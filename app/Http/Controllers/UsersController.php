@@ -28,7 +28,13 @@ class UsersController extends Controller
         $employees = DB::table('employees')
             ->orderBy('id', 'asc')
             ->paginate(5);
-        return view('admin.users.create', compact('employees'));
+        $geofencings = DB::table('geofencings')
+            ->orderBy('id', 'asc')
+            ->paginate(5);
+        $schedules = DB::table('schedules')
+            ->orderBy('id', 'asc')
+            ->paginate(5);
+        return view('admin.users.create', compact('employees', 'geofencings', 'schedules'));
     }
 
     //store
@@ -40,18 +46,24 @@ class UsersController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8',
             'username' => 'required',
+
         ]);
 
-        User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'username' => $request->username,
             'role' => $request->role,
-            'employees_id' => $request->employee,
+            'employees_id' => (int) $request->employees_id,
+            'geofencings_id' => (int) $request->geofencings_id,
+            'schedule_id' => (int) $request->schedule_id,
             'password' => Hash::make($request->password),
             'is_delete' => 0,
             'is_active' => 1,
-        ]);
+        ];
+
+        // dd($data);
+        User::create($data);
 
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
@@ -61,44 +73,53 @@ class UsersController extends Controller
     {
         $user = DB::table('users')
             ->leftJoin('employees', 'users.employees_id', '=', 'employees.id')
-            ->select('users.id', 'users.name as name', 'employees.name as empname', 'users.username', 'users.email', 'users.role')
+            ->leftJoin('geofencings', 'users.geofencings_id', '=', 'geofencings.id')
+            ->leftJoin('schedules', 'users.schedules_id', '=', 'schedules.id')
+            ->select('users.id', 'geofencings_id', 'schedules_id', 'employees_id', 'users.name as name', 'employees.name as employee_name', 'users.username', 'users.email', 'users.role', 'geofencings.name as geofencings_name', 'schedules.name as schedules_name')
             ->where('users.id', $id)
             ->first();
 
         $employees = DB::table('employees')
             ->orderBy('id', 'asc')
             ->paginate(5);
+        $geofencings = DB::table('geofencings')
+            ->orderBy('id', 'asc')
+            ->paginate(5);
+        $schedules = DB::table('schedules')
+            ->orderBy('id', 'asc')
+            ->paginate(5);
 
-        return view('admin.users.edit', compact('user', 'employees'));
+        return view('admin.users.edit', compact('user', 'employees', 'geofencings', 'schedules'));
     }
 
-    //update
     public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required',
             'role' => 'required',
             'email' => 'required|email',
+            'username' => 'required',
         ]);
 
-        $user->update([
+        $data = [
             'name' => $request->name,
-            'email' => $request->email,
             'role' => $request->role,
-            'employee_id' => $request->employee,
-        ]);
+            'email' => $request->email,
+            'employees_id' => (int) $request->employees_id,
+            'geofencings_id' => (int) $request->geofencings_id,
+            'schedule_id' => (int) $request->schedule_id,
+        ];
 
+        $user->update($data);
 
         if ($request->password) {
             $user->update([
                 'password' => Hash::make($request->password),
             ]);
         }
-
         return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
-    //destroy
     public function destroy(User $user)
     {
         $user->is_delete = 1;
