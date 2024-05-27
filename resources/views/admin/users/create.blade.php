@@ -84,6 +84,24 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label for="employee" class="form-label">Employee</label>
+                                <input type="text" class="form-control" name="employee_name" id="employee"
+                                    value="">
+                                <input type="hidden" name="employees_id" id="employee-id" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="geofencing" class="form-label">Geofencing</label>
+                                <input type="text" class="form-control" name="geofencings_name" id="geofencing"
+                                    value="">
+                                <input type="hidden" name="geofencings_id" id="geofencings-id" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="schedule" class="form-label">Schedule</label>
+                                <input type="text" class="form-control" name="schedules_name" id="schedule"
+                                    value="">
+                                <input type="hidden" name="schedules_id" id="schedules-id" value="">
+                            </div>
+                            <div class="form-group">
                                 <label class="form-label">Roles</label>
                                 <div class="selectgroup w-100">
                                     <label class="selectgroup-item">
@@ -92,11 +110,7 @@
                                         <span class="selectgroup-button">Admin</span>
                                     </label>
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="role" value="supervisor" class="selectgroup-input">
-                                        <span class="selectgroup-button">Supervisor</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="role" value="staff" class="selectgroup-input">
+                                        <input type="radio" name="role" value="user" class="selectgroup-input">
                                         <span class="selectgroup-button">Staff</span>
                                     </label>
 
@@ -108,7 +122,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </section>
         <div class="modal fade" tabindex="-1" role="dialog" id="modal-employee">
@@ -136,7 +149,6 @@
                                         <tr>
                                             <th scope="col">ID</th>
                                             <th scope="col">Name</th>
-                                            {{-- <th scope="col">Position</th> --}}
                                             <th scope="col"></th>
                                         </tr>
                                     </thead>
@@ -145,8 +157,6 @@
                                             <tr>
                                                 <td>{{ $employee->id }}</td>
                                                 <td>{{ $employee->name }}</td>
-                                                {{-- <td>{{ $employee->jabatan->title}}</td> --}}
-                                                {{-- <td>{{ $employee->position->title }}</td> --}}
                                                 <td>
                                                     <button type="button" class="btn btn-primary select-employee"
                                                         data-employee-id="{{ $employee->id }}"
@@ -157,8 +167,107 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="float-right">
-                                {{ $employees->withQueryString()->links() }}
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="modal-geofencing">
+            <div class="modal-dialog modal-lg" role="main">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Select Geofencing</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Geofencings</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="search-geofencing">Search</label>
+                                    <input type="search" class="form-control" id="search-geofencing">
+                                </div>
+                                <table class="table table-hover" id="geofencing-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($geofencings as $geofencing)
+                                            <tr>
+                                                <td>{{ $geofencing->id }}</td>
+                                                <td>{{ $geofencing->name }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary select-geofencing"
+                                                        data-geofencing-id="{{ $geofencing->id }}"
+                                                        data-geofencing-name="{{ $geofencing->name }}">Select</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal untuk Schedule -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="modal-schedule">
+            <div class="modal-dialog modal-lg" role="main">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Select Schedule</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Schedules</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="search-schedule">Search</label>
+                                    <input type="search" class="form-control" id="search-schedule">
+                                </div>
+                                <table class="table table-hover" id="schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($schedules as $schedule)
+                                            <tr>
+                                                <td>{{ $schedule->id }}</td>
+                                                <td>{{ $schedule->name }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary select-schedule"
+                                                        data-schedule-id="{{ $schedule->id }}"
+                                                        data-schedule-name="{{ $schedule->name }}">Select</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -174,48 +283,102 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            // Tampilkan modal saat input employee diklik
             $('#employee').click(function() {
                 $('#modal-employee').modal('show');
             });
-        });
-        // $(document).ready(function() {
-        //     $('.select-employee').click(function() {
-        //         var employeeId = $(this).data('employee-id');
-        //         var employeeName = $(this).data('employee-name');
-        //         $('#employee').val(employeeName);
-        //         $('#employee_id').val(employeeId);
-        //         $('#modal-employee').modal('hide');
-        //     });
-        // });
-        $(document).ready(function() {
-            $('#search').keyup(function() {
-                var searchText = $(this).val().toLowerCase();
 
-                // Loop through all table rows
+            // Filter pencarian pada tabel employee
+            $('#search').on('input', function() {
+                var searchText = $(this).val().toLowerCase();
                 $('#employee-table tbody tr').each(function() {
                     var employeeName = $(this).find('td:eq(1)').text().toLowerCase();
-
-                    // If the search text is found in the employee name, show the row, otherwise hide it
-                    if (employeeName.includes(searchText)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
+                    $(this).toggle(employeeName.includes(searchText));
                 });
             });
-        });
-        $(document).ready(function() {
-            $('.select-employee').on('click', function() {
-                var employeeId = $(this).data('employee-id');
+
+            // Pilih employee dari tabel
+            $('.select-employee').click(function() {
+                var employeeId = parseInt($(this).data('employee-id'), 10); // Konversi ke integer
                 var employeeName = $(this).data('employee-name');
 
-                // Set the selected employee in the form select element
-                $('#employee').append($('<option>', {
-                    value: employeeId,
-                    text: employeeName
-                }));
-                // Close the modal
+                // Isi input dengan nama employee yang dipilih
+                $('#employee').val(employeeName);
+
+                // Pastikan input hidden untuk employee_id ada dan isi dengan ID yang dipilih
+                if ($('#employee-id').length === 0) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        id: 'employee-id',
+                        name: 'employees_id',
+                        value: employeeId
+                    }).appendTo('form');
+                } else {
+                    $('#employee-id').val(employeeId);
+                }
+
+                // Tutup modal
                 $('#modal-employee').modal('hide');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Tampilkan modal saat input geofencing atau schedule diklik
+            $('#geofencing').click(function() {
+                $('#modal-geofencing').modal('show');
+            });
+
+            $('#schedule').click(function() {
+                $('#modal-schedule').modal('show');
+            });
+
+            // Filter pencarian pada tabel geofencing
+            $('#search-geofencing').on('input', function() {
+                var searchText = $(this).val().toLowerCase();
+                $('#geofencing-table tbody tr').each(function() {
+                    var geofencingName = $(this).find('td:eq(1)').text().toLowerCase();
+                    $(this).toggle(geofencingName.includes(searchText));
+                });
+            });
+
+            // Filter pencarian pada tabel schedule
+            $('#search-schedule').on('input', function() {
+                var searchText = $(this).val().toLowerCase();
+                $('#schedule-table tbody tr').each(function() {
+                    var scheduleName = $(this).find('td:eq(1)').text().toLowerCase();
+                    $(this).toggle(scheduleName.includes(searchText));
+                });
+            });
+
+            // Pilih geofencing dari tabel
+            $(document).on('click', '.select-geofencing', function() {
+                var geofencingId = parseInt($(this).data('geofencing-id'), 10); // Konversi ke integer
+                var geofencingName = $(this).data('geofencing-name');
+
+                // Isi input dengan nama geofencing yang dipilih
+                $('#geofencing').val(geofencingName);
+
+                // Pastikan input hidden untuk geofencing_id ada dan isi dengan ID yang dipilih
+                $('#geofencings-id').val(geofencingId);
+
+                // Tutup modal
+                $('#modal-geofencing').modal('hide');
+            });
+
+            // Pilih schedule dari tabel
+            $(document).on('click', '.select-schedule', function() {
+                var scheduleId = parseInt($(this).data('schedule-id'), 10); // Konversi ke integer
+                var scheduleName = $(this).data('schedule-name');
+
+                // Isi input dengan nama schedule yang dipilih
+                $('#schedule').val(scheduleName);
+
+                // Pastikan input hidden untuk schedule_id ada dan isi dengan ID yang dipilih
+                $('#schedules-id').val(scheduleId);
+
+                // Tutup modal
+                $('#modal-schedule').modal('hide');
             });
         });
     </script>

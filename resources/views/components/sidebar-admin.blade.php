@@ -34,28 +34,19 @@
                         <a class="nav-link" href="{{ Route('employees.index') }}">Master Employee</a>
                     </li>
                     <li class="{{ Request::is('layout-top-navigation') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('layout-top-navigation') }}">Master Unit</a>
+                        <a class="nav-link" href="{{ Route('units.index') }}">Master Unit</a>
                     </li>
                     <li class="{{ Request::is('layout-top-navigation') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('layout-top-navigation') }}">Master Job</a>
+                        <a class="nav-link" href="{{ Route('jabatans.index') }}">Master Job</a>
                     </li>
                     <li class="{{ Request::is('layout-top-navigation') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('layout-top-navigation') }}">Master Position</a>
+                        <a class="nav-link" href="{{ Route('positions.index') }}">Master Position</a>
                     </li>
                     <li class="{{ Request::is('layout-top-navigation') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('layout-top-navigation') }}">Master Schedule</a>
+                        <a class="nav-link" href="{{ Route('schedules.index') }}">Master Schedule</a>
                     </li>
                     <li class="{{ Request::is('layout-top-navigation') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('layout-top-navigation') }}">Master Geofencing</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-users"></i>
-                    <span>STO</span></a>
-                <ul class="dropdown-menu">
-                    <li class="{{ Request::is('layout-default-layout') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('layout-default-layout') }}">Structure Organization</a>
+                        <a class="nav-link" href="{{ Route('geofencings.index') }}">Master Geofencing</a>
                     </li>
                 </ul>
             </li>
@@ -68,6 +59,15 @@
                     </li>
                     <li class="{{ Request::is('layout-default-layout') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('layout-default-layout') }}">Employee Salary</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-users"></i>
+                    <span>STO</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ Request::is('layout-default-layout') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ url('layout-default-layout') }}">Structure Organization</a>
                     </li>
                 </ul>
             </li>
