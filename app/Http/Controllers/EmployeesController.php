@@ -10,7 +10,7 @@ class EmployeesController extends Controller
     public function index()
     {
         $employees = Employee::where('is_delete', 0)->where('is_active', 1)
-        ->orderBy('id', 'desc')
+        ->orderBy('id', 'asc')
         ->paginate(10);
         return view('admin.employees.index', compact('employees'));
     }
