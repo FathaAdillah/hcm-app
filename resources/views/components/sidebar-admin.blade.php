@@ -23,6 +23,9 @@
                     <li class="{{ Request::is('dashboard-ecommerce-dashboard') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ Route('users.index') }}">Users</a>
                     </li>
+                    <li class="{{ Request::is('dashboard-ecommerce-dashboard') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ Route('companies.show', 1) }}">Companies</a>
+                    </li>
                 </ul>
             </li>
             <li class="menu-header">Administrator</li>

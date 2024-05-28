@@ -11,6 +11,7 @@ use App\Http\Controllers\JabatansController;
 use App\Http\Controllers\PositionsController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\GeofencingsController;
+use App\Http\Controllers\CompaniesController;
 
 Route::get('/', function () {
     return view('pages.auth.auth-login');
@@ -43,5 +44,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::resource('positions', PositionsController::class);
         Route::resource('schedules', SchedulesController::class);
         Route::resource('geofencings', GeofencingsController::class);
+        Route::resource('companies', CompaniesController::class);
     });
 });
