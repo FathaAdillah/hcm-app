@@ -12,6 +12,7 @@ use App\Http\Controllers\PositionsController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\GeofencingsController;
 use App\Http\Controllers\CompaniesController;
+use App\Models\Absensi;
 
 Route::get('/', function () {
     return view('pages.auth.auth-login');
@@ -30,6 +31,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post('/reset-password', [ResetPasswordController::class, 'update'])->name('password.update');
     Route::resource('absen', AbsenController::class);
     Route::resource('profile', ProfileController::class);
+
 
 
 
