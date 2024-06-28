@@ -1,289 +1,365 @@
 @extends('layouts.app')
 
-@section('title', 'General Dashboard')
+@section('title', 'Edit User')
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    </head>
+    <link rel="stylesheet" href="{{ asset('library/bootstrap-daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
 @endpush
 
 @section('main')
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Absensi</h1>
-            </div>
-            <div class="section-body">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Aturan Absensi</h4>
-                    </div>
-                    <div class="card-body row">
-                        <div class="col-lg-6 col-md-6">
-                            <p>1. Absen masuk pukul 08.00 WIB</p>
-                            <p>2. Absen pulang pukul 17.00 WIB</p>
-                            <p>3. Jika terlambat, maka akan dikenakan denda</p>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <img src="{{ asset('img/time.jpg') }}" style="width: 90%" alt="time">
-                        </div>
-                    </div>
+                <h1>Edit User</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                    <div class="breadcrumb-item"><a href="#">Forms</a></div>
+                    <div class="breadcrumb-item">Users</div>
                 </div>
-                <div class="card">
+            </div>
+            <div class="card">
+                <form action="{{ route('users.update', $user->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
                     <div class="card-header">
-                        <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-center">
-                            <form class="form-inline mb-3 mb-md-0">
-                                <div class="form-group mr-md-2">
-                                    <input type="text" class="form-control" placeholder="Month" id="month"
-                                        name="month">
+                        <h4>Form Edit</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
+                                value="{{ $user->name }}">
+                            @error('name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
-                                <div class="form-group mr-md-2">
-                                    <input type="text" class="form-control" placeholder="Year" id="year"
-                                        name="year">
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                                value="{{ $user->email }}">
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-                            </form>
-                            <div class="ml-md-auto mt-3 mt-md-0">
-                                <a href="#" class="btn btn-icon btn-icon-left btn-primary" data-toggle="modal"
-                                    data-target="#checkinModal">
-                                    <i class="fas fa-right-to-bracket"></i> Absen Masuk
-                                </a>
-                                <a href="#" class="btn btn-icon btn-icon-left btn-danger" data-toggle="modal"
-                                    data-target="#checkoutModal">
-                                    <i class="fas fa-sign-out-alt"></i> Absen Pulang
-                                </a>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                    name="password">
+                            </div>
+                            @error('password')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="employee" class="form-label">Employee</label>
+                            <input type="text" class="form-control" name="employee_name" id="employee"
+                                value="{{ $user->employee_name }}">
+                            <input type="hidden" name="employee_id" id="employee-id" value="{{ $user->employees_id }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="geofencing" class="form-label">Geofencing</label>
+                            <input type="text" class="form-control" name="geofencings_name" id="geofencing"
+                                value="{{ $user->geofencings_name }}">
+                            <input type="hidden" name="geofencings_id" id="geofencings-id"
+                                value="{{ $user->geofencings_id }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="schedule" class="form-label">Schedule</label>
+                            <input type="text" class="form-control" name="schedules_name" id="schedule"
+                                value="{{ $user->schedules_name }}">
+                            <input type="hidden" name="schedules_id" id="schedules-id" value="{{ $user->schedules_id }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Roles</label>
+                            <div class="selectgroup w-100">
+                                <label class="selectgroup-item">
+                                    <input type="radio" name="role" value="admin" class="selectgroup-input"
+                                        @if ($user->role == 'admin') checked @endif>
+                                    <span class="selectgroup-button">Admin</span>
+                                </label>
+
+                                <label class="selectgroup-item">
+                                    <input type="radio" name="role" value="user" class="selectgroup-input"
+                                        @if ($user->role == 'user') checked @endif>
+                                    <span class="selectgroup-button">Staff</span>
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="float-right">
-                            <form method="GET" action="">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" name="name">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                    </div>
-                                </div>
-                            </form>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+    </section>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-employee">
+        <div class="modal-dialog modal-lg" role="main">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Employees</h4>
                         </div>
-                        <div class="clearfix mb-3"></div>
-                        <div class="table-responsive">
-                            <table class="table-striped table">
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>Jam Masuk</th>
-                                    <th>Jam Pulang</th>
-                                    <th>Status</th>
-                                    <th>Aktivitas</th>
-                                </tr>
-                                <tr>
-                                    <td>12-05-2024</td>
-                                    <td>08:10</td>
-                                    <td>17:10</td>
-                                    <td><span class="badge badge-danger">Terlambat</span></td>
-                                    <td><button class="btn btn-success">Detail Aktivitas</button></td>
-                                </tr>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="search-employee">Search</label>
+                                <input type="search" class="form-control" id="search-employee">
+                            </div>
+                            <table class="table table-hover" id="employee-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($employees as $employee)
+                                        <tr>
+                                            <td>{{ $employee->id }}</td>
+                                            <td>{{ $employee->name }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary select-employee"
+                                                    data-employee-id="{{ $employee->id }}"
+                                                    data-employee-name="{{ $employee->name }}">Select</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <div class="modal fade" id="checkinModal" tabindex="-1" role="dialog" aria-labelledby="checkinModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="checkinModalLabel">Check-In</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="mapCheckin" style="height: 300px;"></div>
-                        <p>Live Time: <span id="liveTimeCheckin"></span></p>
-                        <button id="recordCheckin" class="btn btn-primary">Record Check-In</button>
-                    </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-
-        <!-- Checkout Modal -->
-        <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="checkoutModalLabel">Check-Out</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-geofencing">
+        <div class="modal-dialog modal-lg" role="main">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Geofencing</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Geofencings</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="search-geofencing">Search</label>
+                                <input type="search" class="form-control" id="search-geofencing">
+                            </div>
+                            <table class="table table-hover" id="geofencing-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($geofencings as $geofencing)
+                                        <tr>
+                                            <td>{{ $geofencing->id }}</td>
+                                            <td>{{ $geofencing->name }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary select-geofencing"
+                                                    data-geofencing-id="{{ $geofencing->id }}"
+                                                    data-geofencing-name="{{ $geofencing->name }}">Select</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="float-right">
+                            {{ $geofencings->withQueryString()->links() }}
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div id="mapCheckout" style="height: 300px;"></div>
-                        <p>Live Time: <span id="liveTimeCheckout"></span></p>
-                        <button id="recordCheckout" class="btn btn-primary">Record Check-Out</button>
-                    </div>
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-        </section>
+    </div>
+
+    <!-- Modal untuk Schedule -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-schedule">
+        <div class="modal-dialog modal-lg" role="main">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Schedule</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Schedules</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="search-schedule">Search</label>
+                                <input type="search" class="form-control" id="search-schedule">
+                            </div>
+                            <table class="table table-hover" id="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($schedules as $schedule)
+                                        <tr>
+                                            <td>{{ $schedule->id }}</td>
+                                            <td>{{ $schedule->name }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary select-schedule"
+                                                    data-schedule-id="{{ $schedule->id }}"
+                                                    data-schedule-name="{{ $schedule->name }}">Select</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="float-right">
+                            {{ $schedules->withQueryString()->links() }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 @endsection
 
 @push('scripts')
     <script>
-        let checkinRecorded = false;
-        let employeeId;
+       $(document).ready(function() {
+    // Tampilkan modal saat input employee, geofencing, atau schedule diklik
+    $('#employee').click(function() {
+        $('#modal-employee').modal('show');
+    });
 
-        $(document).ready(function() {
-            // Set employeeId saat halaman dimuat
-            employeeId = {{ auth()->user()->employees_id ?? 'null' }};
+    $('#geofencing').click(function() {
+        $('#modal-geofencing').modal('show');
+    });
+
+    $('#schedule').click(function() {
+        $('#modal-schedule').modal('show');
+    });
+
+    // Filter pencarian pada tabel employee
+    $('#search-employee').on('input', function() {
+        var searchText = $(this).val().toLowerCase();
+        $('#employee-table tbody tr').each(function() {
+            var employeeName = $(this).find('td:eq(1)').text().toLowerCase();
+            $(this).toggle(employeeName.includes(searchText));
         });
+    });
 
-        function updateLiveTime() {
-            const now = new Date();
-            document.getElementById('liveTimeCheckin').textContent = now.toLocaleTimeString();
-            document.getElementById('liveTimeCheckout').textContent = now.toLocaleTimeString();
-        }
-
-        setInterval(updateLiveTime, 1000);
-
-        let mapCheckin, mapCheckout, markerCheckin, markerCheckout;
-
-        function initializeMap(mapId, markerVar, mapVar) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    mapVar = L.map(mapId).setView([lat, lng], 13);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    }).addTo(mapVar);
-                    markerVar = L.marker([lat, lng]).addTo(mapVar);
-                    mapVar.on('locationfound', function(e) {
-                        const newLat = e.latlng.lat;
-                        const newLng = e.latlng.lng;
-                        markerVar.setLatLng(e.latlng);
-                    });
-                    mapVar.locate({
-                        setView: true,
-                        watch: true
-                    });
-                }, function(error) {
-                    alert('Error occurred. Error code: ' + error.code);
-                });
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
-        }
-
-        $('#checkinModal').on('shown.bs.modal', function() {
-            initializeMap('mapCheckin', markerCheckin, mapCheckin);
+    // Filter pencarian pada tabel geofencing
+    $('#search-geofencing').on('input', function() {
+        var searchText = $(this).val().toLowerCase();
+        $('#geofencing-table tbody tr').each(function() {
+            var geofencingName = $(this).find('td:eq(1)').text().toLowerCase();
+            $(this).toggle(geofencingName.includes(searchText));
         });
+    });
 
-        $('#checkoutModal').on('shown.bs.modal', function() {
-            if (checkinRecorded) {
-                initializeMap('mapCheckout', markerCheckout, mapCheckout);
-            } else {
-                alert('You must check-in before you can check-out.');
-                $('#checkoutModal').modal('hide');
-            }
+    // Filter pencarian pada tabel schedule
+    $('#search-schedule').on('input', function() {
+        var searchText = $(this).val().toLowerCase();
+        $('#schedule-table tbody tr').each(function() {
+            var scheduleName = $(this).find('td:eq(1)').text().toLowerCase();
+            $(this).toggle(scheduleName.includes(searchText));
         });
+    });
 
-        function formatTime(date) {
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-            let seconds = date.getSeconds();
-            if (hours < 10) hours = '0' + hours;
-            if (minutes < 10) minutes = '0' + minutes;
-            if (seconds < 10) seconds = '0' + seconds;
-            return `${hours}:${minutes}:${seconds}`;
-        }
+    // Pilih employee dari tabel
+    $(document).on('click', '.select-employee', function() {
+        var employeeId = parseInt($(this).data('employee-id'), 10); // Konversi ke integer
+        var employeeName = $(this).data('employee-name');
 
-        // Assuming you have the token stored in a variable `authToken`
-        const authToken = localStorage.getItem('authToken');
+        // Isi input dengan nama employee yang dipilih
+        $('#employee').val(employeeName);
 
-        function checkin(position, time) {
-            const data = {
-                date: new Date().toISOString().split('T')[0],
-                check_in: time,
-                latlong_in: `${position.coords.latitude}, ${position.coords.longitude}`,
-                employees_id: employeeId
-            };
+        // Pastikan input hidden untuk employee_id ada dan isi dengan ID yang dipilih
+        $('#employee-id').val(employeeId);
 
-            $.ajax({
-                url: '/api/absen/checkin',
-                type: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                success: function(response) {
-                    checkinRecorded = true;
-                    alert('Check-In recorded successfully.');
-                    $('#checkinModal').modal('hide');
-                },
-                error: function(error) {
-                    alert('Error recording Check-In.');
-                }
-            });
-        }
+        // Tutup modal
+        $('#modal-employee').modal('hide');
+    });
 
-        function checkout(position, time) {
-            const data = {
-                date: new Date().toISOString().split('T')[0],
-                check_out: time,
-                latlong_out: `${position.coords.latitude}, ${position.coords.longitude}`,
-                employees_id: employeeId
-            };
+    // Pilih geofencing dari tabel
+    $(document).on('click', '.select-geofencing', function() {
+        var geofencingId = parseInt($(this).data('geofencing-id'), 10); // Konversi ke integer
+        var geofencingName = $(this).data('geofencing-name');
 
-            $.ajax({
-                url: '/api/absen/checkout',
-                type: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                success: function(response) {
-                    alert('Check-Out recorded successfully.');
-                    $('#checkoutModal').modal('hide');
-                },
-                error: function(error) {
-                    alert('Error recording Check-Out.');
-                }
-            });
-        }
+        // Isi input dengan nama geofencing yang dipilih
+        $('#geofencing').val(geofencingName);
 
-        $('#recordCheckin').on('click', function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const time_in = formatTime(new Date());
-                    checkin(position, time_in);
-                });
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
-        });
+        // Pastikan input hidden untuk geofencing_id ada dan isi dengan ID yang dipilih
+        $('#geofencings-id').val(geofencingId);
 
-        $('#recordCheckout').on('click', function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const time_out = formatTime(new Date());
-                    checkout(position, time_out);
-                });
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
-        });
+        // Tutup modal
+        $('#modal-geofencing').modal('hide');
+    });
+
+    // Pilih schedule dari tabel
+    $(document).on('click', '.select-schedule', function() {
+        var scheduleId = parseInt($(this).data('schedule-id'), 10); // Konversi ke integer
+        var scheduleName = $(this).data('schedule-name');
+
+        // Isi input dengan nama schedule yang dipilih
+        $('#schedule').val(scheduleName);
+
+        // Pastikan input hidden untuk schedule_id ada dan isi dengan ID yang dipilih
+        $('#schedules-id').val(scheduleId);
+
+        // Tutup modal
+        $('#modal-schedule').modal('hide');
+    });
+});
+
     </script>
 @endpush
